@@ -10,7 +10,7 @@ provider "aws" {
   region = "us-east-1"
 }
 resource "aws_security_group" "http_and_ssh" {
-  name = “sec-grp”
+  name = "http_and_ssh"
   description = "Allow HTTP and SSH traffic via Terraform"
 
   ingress {
