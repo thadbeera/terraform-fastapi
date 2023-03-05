@@ -37,5 +37,25 @@ resource "aws_security_group" "http_and_ssh" {
 resource "aws_instance" "fast_api" {
   instance_type = "t2.micro"
   ami = "ami-0557a15b87f6559cf"
-  securitysecurity_groups = [aws_security_group.http_and_ssh.name] 
+  security_groups = [aws_security_group.http_and_ssh.name] 
+  user_data = <<EOF
+    #! /bin/bash
+    set -x
+    sudo apt-get update
+    sudo apt install -y python3-pip nginx
+    sudo pip install "fastapi[all]"
+    sudo pip install uvicorn
+    sudo git clone https://github.com/thadbeera/fast_api.git
+    sudo cd fast_api
+    latestip=$(curl -sL http://169.254.169.254/latest/meta-data/public-ipv4)
+    cd fast_api
+    pwd
+    sudo sed -i "s/IPADDRESS/$latestip/g" fastapi_nginx
+    sudo cp fastapi_nginx /etc/nginx/sites-enabled/
+    sudo service nginx restart
+    python3 -m uvicorn main:app
+EOF
+  tags = {
+    Name = "fast_api"
+  }
 }
