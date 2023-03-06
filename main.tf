@@ -41,7 +41,7 @@ resource "aws_instance" "fast_api" {
   user_data = <<EOF
     #! /bin/bash
     set -x
-    sudo apt -get update
+    sudo apt-get update
     sudo apt install -y python3-pip nginx
     sudo pip install "fastapi[all]"
     sudo pip install uvicorn
