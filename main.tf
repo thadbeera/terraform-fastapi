@@ -45,6 +45,7 @@ resource "aws_instance" "fast_api" {
     sudo apt install -y python3-pip nginx
     sudo pip install "fastapi[all]"
     sudo pip install uvicorn
+    sudo cd /tmp
     sudo git clone https://github.com/thadbeera/fast_api.git
     sudo cd fast_api
     latestip=$(curl -sL http://169.254.169.254/latest/meta-data/public-ipv4)
